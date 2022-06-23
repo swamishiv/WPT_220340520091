@@ -1,0 +1,106 @@
+<html>
+
+<body>
+
+	<!-- <form action="poc2" method="get">
+		<Br />whocares<input type="text" name="whocares" />
+		<input type="submit" value="get" />
+	</form> -->
+
+
+	<!-- <form action="poc1" method="post">
+<Br/>whocares<input type="text" name="whocares"/>
+<input type="submit" value="post"/>
+</form>
+
+<button id="b2"> jquery works</button> -->
+
+	<h1>Question 1</h1>
+	Book id<input type="text" name="bookid" id="bookid">
+	<span id="msg">Message</span><br><br>
+	Book name<input type="text" name="bookname" id="bookname"><br><br>
+	Price <input type="text" name="bookprice" id="bookprice"><br><br>
+	<button id="update">update book</button>
+
+
+</body>
+
+<script src="jquery-3.5.1.min.js"></script>
+<script>//our scrip will come here 
+
+
+
+	$(document).ready(function () {
+		console.log("no more sins");
+		// $("#b2").click(function () {
+		// 	//console.log("jquery works");
+		// 	alert("jquery works")
+		// });
+
+		$("#bookid").blur(() => {
+
+			console.log("it is working");
+
+			let bookid = { bookid: $("#bookid").val() };
+			console.log(bookid);
+
+			let ajaxpar = {
+
+				data: bookid,
+				url: "http://localhost:8081/getbookdetails",
+				type: 'get',
+				dataType: "json",
+				success: (output) => {
+					console.log("My server is connected" + output.status);
+					if (output.status) {
+						$("#bookname").val(output.bookdetails.bookname);
+						$("#bookprice").val(output.bookdetails.price);
+						$("#msg").html("bookid is found");
+					} else {
+						$("#bookname").val("");
+						$("#bookprice").val("");
+						$("#msg").html("bookid not found");
+					}
+				},
+				error: (err) => {
+					console.log("My server is not connected");
+				}
+			}
+
+			$.ajax(ajaxpar);
+
+		});// end of blur event
+
+		$("#update").click(() => {
+			console.log("My update event is working");
+			let input = { bookid: $("#bookid").val(), bookname: $("#bookname").val(), price: $("#bookprice").val() };
+			console.log(input);
+
+			let ajaxpar = {
+				data: input,
+				url: "http://localhost:8081/updatebookdetails",
+				type: 'get',
+				dataType: "json",
+				success: (output) => {
+					console.log("My server is connected" + output);
+					if (output) {
+						$("#msg").html("book details updated successfully");
+					} else {
+						$("#msg").html("book details not updated ");
+					}
+				},
+				error: (err) => {
+					console.log("My server is not connected" + output);
+				}
+			}
+			$.ajax(ajaxpar);
+
+		});//end of update event
+
+	});
+
+
+</script>
+
+
+</html>
